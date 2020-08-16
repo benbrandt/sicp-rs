@@ -1,0 +1,1 @@
+An attempt to work through the exercises in Structure and Interpretation of Computer Programs in both Scheme and Rust.
