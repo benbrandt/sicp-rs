@@ -1,26 +1,14 @@
 
-(define 
-    (square x) 
-    (* x x)) 
+(define (square x) (* x x))
 
-(define 
-    (sumsquares x y) 
-    (+ 
-        (square x) 
-        (square y))) 
+(define (sum-of-squares x y)
+    (+ (square x) (square y)))
 
-(define 
-    (sqsumlargest a b c) 
-    (cond  
-        ((and 
-                (>= a c) 
-                (>= b c)) 
-            (sumsquares a b)) 
-        ((and 
-                (>= b a) 
-                (>= c a)) 
-            (sumsquares b c)) 
-        ((and 
-                (>= a b) 
-                (>= c b)) 
-            (sumsquares a c)))) 
+(define (sum-of-largest-squares x y z)
+    (cond
+        ((and (>= x z) (>= y z))
+            (sum-of-squares x y))
+        ((and (>= y x) (>= z x))
+            (sum-of-squares y z))
+        ((and (>= x y) (>= z y))
+            (sum-of-squares x z))))
