@@ -43,27 +43,21 @@ where
     f64_eq(improve(guess, x), guess)
 }
 
-/// Recursively improve the guess until it
-/// is good enough with our precision
-fn sqrt_iter<T>(guess: f64, x: T) -> f64
-where
-    T: Copy,
-    f64: From<T>,
-{
-    if good_enough(guess, x) {
-        guess
-    } else {
-        sqrt_iter(improve(guess, x), x)
-    }
-}
-
 /// Find the square root of a given number using Newton's method
 pub fn sqrt<T>(x: T) -> f64
 where
     T: Copy,
     f64: From<T>,
 {
-    sqrt_iter(1.0, x)
+    // Initial guess
+    let mut guess = 1.0;
+
+    // improve the guess until it is good enough with our precision
+    while !good_enough(guess, x) {
+        guess = improve(guess, x);
+    }
+
+    guess
 }
 
 #[cfg(test)]
@@ -91,21 +85,6 @@ mod tests {
         assert!(good_enough(3162277.6601683795, 10000000000000.0001));
         assert!(good_enough(10_000_000_000.0, 100_000_000_000_000_000_000.0));
         assert!(good_enough(3.162_277_660_168_379e-7, 0.0000000000001));
-    }
-
-    #[test]
-    fn test_sqrt_iter() {
-        let numbers: [f64; 5] = [
-            9.0,
-            0.0001,
-            10000000000000.0001,
-            100_000_000_000_000_000_000.0,
-            0.0000000000001,
-        ];
-
-        for n in numbers {
-            assert!(f64_eq(sqrt_iter(1.0, n), n.sqrt()));
-        }
     }
 
     #[test]
