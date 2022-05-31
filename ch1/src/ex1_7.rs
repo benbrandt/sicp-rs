@@ -34,15 +34,6 @@ where
     average::<f64>(guess, f64::from(x) / guess)
 }
 
-/// Check if we've hit the limits of our improvements
-/// at f64 precision.
-fn good_enough<T>(guess: f64, x: T) -> bool
-where
-    f64: From<T>,
-{
-    f64_eq(improve(guess, x), guess)
-}
-
 /// Find the square root of a given number using Newton's method
 pub fn sqrt<T>(x: T) -> f64
 where
@@ -53,8 +44,14 @@ where
     let mut guess = 1.0;
 
     // improve the guess until it is good enough with our precision
-    while !good_enough(guess, x) {
-        guess = improve(guess, x);
+    loop {
+        let next_guess = improve(guess, x);
+        // If these two are equal, break out of the loop, we are done.
+        if f64_eq(next_guess, guess) {
+            break;
+        }
+        // Otherwise update guess and try again.
+        guess = next_guess;
     }
 
     guess
@@ -76,15 +73,6 @@ mod tests {
         assert!(f64_eq(improve(1.0, 2), 1.5));
         assert!(f64_eq(improve(1.5, 2), 1.4166666666666665));
         assert!(f64_eq(improve(1.4166666666666665, 2), 1.4142156862745097));
-    }
-
-    #[test]
-    fn test_good_enough() {
-        assert!(good_enough(3.0, 9));
-        assert!(good_enough(0.01, 0.0001));
-        assert!(good_enough(3162277.6601683795, 10000000000000.0001));
-        assert!(good_enough(10_000_000_000.0, 100_000_000_000_000_000_000.0));
-        assert!(good_enough(3.162_277_660_168_379e-7, 0.0000000000001));
     }
 
     #[test]
