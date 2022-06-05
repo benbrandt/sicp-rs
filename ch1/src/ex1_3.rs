@@ -20,6 +20,7 @@ where
     square(x) + square(y)
 }
 
+/// Return the sum of the squares of the largest 2 of 3 numbers
 pub fn sum_of_largest_two_squares<T>(x: T, y: T, z: T) -> T
 where
     T: Copy + Ord + Add<Output = T> + Mul<Output = T>,

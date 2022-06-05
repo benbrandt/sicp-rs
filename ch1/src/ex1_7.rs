@@ -9,37 +9,26 @@
 //! square-root procedure that uses this kind of end test. Does this work
 //! better for small and large numbers?
 
-use std::ops::Add;
-
-/// Compare two float values accurately
+/// Compare if two float values are equal (or as close as we can get)
 fn f64_eq(x: f64, y: f64) -> bool {
-    (x - y).abs() < f64::EPSILON
-}
-
-/// Return the average of 2 values, as a float
-fn average<T>(x: T, y: T) -> f64
-where
-    T: Add<Output = T>,
-    f64: From<T>,
-{
-    f64::from(x + y) / 2.0
+    // Check if they are equal, or as close as we can get with floating point precision
+    x == y || (x - y).abs() <= f64::EPSILON
 }
 
 /// Improve square root guess by averaging the guess
 /// with the number (x) divided by the current guess
-fn improve<T>(guess: f64, x: T) -> f64
-where
-    f64: From<T>,
-{
-    average::<f64>(guess, f64::from(x) / guess)
+fn improve(guess: f64, x: f64) -> f64 {
+    (guess + x / guess) / 2.0
 }
 
 /// Find the square root of a given number using Newton's method
 pub fn sqrt<T>(x: T) -> f64
 where
-    T: Copy,
     f64: From<T>,
 {
+    // Convert x into a f64
+    let x = f64::from(x);
+
     // Initial guess
     let mut guess = 1.0;
 
@@ -60,19 +49,14 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_average() {
-        assert!(f64_eq(average(2, 1), 1.5));
-        assert!(f64_eq(average(1.3333, 1.5), 1.41665));
-        assert!(f64_eq(average(1.4167, 1.4118), 1.41425));
-    }
-
     #[test]
     fn test_improve() {
-        assert!(f64_eq(improve(1.0, 2), 1.5));
-        assert!(f64_eq(improve(1.5, 2), 1.4166666666666665));
-        assert!(f64_eq(improve(1.4166666666666665, 2), 1.4142156862745097));
+        assert!(f64_eq(improve(1.0, 2.0), 1.5));
+        assert!(f64_eq(improve(1.5, 2.0), 1.416_666_666_666_666_5));
+        assert!(f64_eq(
+            improve(1.416_666_666_666_666_5, 2.0),
+            1.414_215_686_274_509_7
+        ));
     }
 
     #[test]
@@ -80,9 +64,9 @@ mod tests {
         let numbers: [f64; 5] = [
             9.0,
             0.0001,
-            10000000000000.0001,
+            10_000_000_000_000.000_1,
             100_000_000_000_000_000_000.0,
-            0.0000000000001,
+            0.000_000_000_000_1,
         ];
 
         for n in numbers {
