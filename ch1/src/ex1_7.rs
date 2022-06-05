@@ -10,7 +10,7 @@
 //! better for small and large numbers?
 
 /// Compare if two float values are equal (or as close as we can get)
-fn f64_eq(x: f64, y: f64) -> bool {
+pub(crate) fn f64_eq(x: f64, y: f64) -> bool {
     // Check if they are equal, or as close as we can get with floating point precision
     x == y || (x - y).abs() <= f64::EPSILON
 }
