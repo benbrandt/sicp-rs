@@ -5,7 +5,7 @@ use std::cmp::Ord;
 use std::ops::{Add, Mul};
 
 /// Square of a given number
-fn square<T>(x: T) -> T
+pub(crate) fn square<T>(x: T) -> T
 where
     T: Copy + Mul<Output = T>,
 {

@@ -7,13 +7,13 @@
 //! Use this formula to implement a cube-root procedure analogous to the
 //! square-root procedure.
 
-use crate::ex1_7::f64_eq;
+use crate::{ex1_3::square, ex1_7::f64_eq};
 
 /// Improve cube root guess using Newton's method for approximating a better guess
 fn improve(guess: f64, x: f64) -> f64 {
-    // Should be the same as: (x / (guess * guess) + 2.0 * guess) / 3.0
+    // Should be the same as: (x / square(guess) + 2.0 * guess) / 3.0
     // https://rust-lang.github.io/rust-clippy/master/index.html#suboptimal_flops
-    2.0f64.mul_add(guess, x / (guess * guess)) / 3.0
+    2.0f64.mul_add(guess, x / square(guess)) / 3.0
 }
 
 /// Find the cube root of a given number using Newton's method
