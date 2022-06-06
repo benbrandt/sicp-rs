@@ -50,7 +50,8 @@ mod tests {
         let numbers: [f64; 5] = [5.0, -2.0, 27.0, 0.0, 100_000_000_000_000.000_1];
 
         for n in numbers {
-            // Not as accurate as built-in, so can't use our `f64_eq` function.
+            // Level of precision used in docs for cbrt()
+            // https://doc.rust-lang.org/std/primitive.f64.html#method.cbrt
             assert!((n.cbrt() - cbrt(n)).abs() < 1e-10);
         }
     }
