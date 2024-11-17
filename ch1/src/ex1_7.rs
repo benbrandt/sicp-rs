@@ -1,4 +1,6 @@
-//! Exercise 1.7: The good-enough? test used in computing square roots will not
+//! Exercise 1.7:
+//!
+//! The good-enough? test used in computing square roots will not
 //! be very effective for finding the square roots of very small numbers. Also,
 //! in real computers, arithmetic operations are almost always performed with
 //! limited precision. This makes our test inadequate for very large numbers.
